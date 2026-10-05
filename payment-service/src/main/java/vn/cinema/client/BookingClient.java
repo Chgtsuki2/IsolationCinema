@@ -1,0 +1,2 @@
+package vn.cinema.client;
+import org.springframework.cloud.openfeign.FeignClient;import org.springframework.web.bind.annotation.*;import com.fasterxml.jackson.databind.JsonNode;@FeignClient(name="booking-service",url="http://localhost:8085")public interface BookingClient{@GetMapping("/internal/bookings/{id}")JsonNode get(@PathVariable long id);@PutMapping("/internal/bookings/{id}/confirm")JsonNode confirm(@PathVariable long id);@PutMapping("/internal/bookings/{id}/cancel")JsonNode cancel(@PathVariable long id);}

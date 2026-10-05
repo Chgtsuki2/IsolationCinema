@@ -1,0 +1,2 @@
+package vn.cinema.client;
+import org.springframework.cloud.openfeign.FeignClient;import org.springframework.web.bind.annotation.*;import java.util.Map;@FeignClient(name="notification-service",url="http://localhost:8087")public interface NotificationClient{@PostMapping("/internal/notifications")Object send(@RequestBody Map<String,Object> request);}

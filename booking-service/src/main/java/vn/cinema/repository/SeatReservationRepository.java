@@ -1,0 +1,3 @@
+package vn.cinema.repository;
+import vn.cinema.entity.SeatReservation;import org.springframework.data.jpa.repository.*;import org.springframework.data.repository.query.Param;import jakarta.persistence.LockModeType;import java.util.*;
+public interface SeatReservationRepository extends JpaRepository<SeatReservation,Long>{List<SeatReservation> findByShowtimeId(Long id);void deleteByBookingId(Long id);}

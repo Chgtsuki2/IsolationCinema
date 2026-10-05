@@ -1,0 +1,2 @@
+package vn.cinema.service;
+import java.math.BigDecimal;import vn.cinema.exception.Problem;public final class TicketPricing{public static BigDecimal price(BigDecimal base,String type){return switch(type){case "NORMAL"->base;case "VIP"->base.add(new BigDecimal("30000"));case "COUPLE"->base.multiply(new BigDecimal("2"));default->throw new Problem(400,"Loại ghế không hợp lệ");};}}

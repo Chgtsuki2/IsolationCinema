@@ -1,0 +1,2 @@
+package vn.cinema.client;
+import org.springframework.cloud.openfeign.FeignClient;import org.springframework.web.bind.annotation.*;import com.fasterxml.jackson.databind.JsonNode;@FeignClient(name="showtime-service",url="http://localhost:8084")public interface ShowtimeClient{@GetMapping("/internal/showtimes/{id}/details")JsonNode details(@PathVariable long id);@PostMapping("/internal/showtimes/{id}/open-booking")JsonNode open(@PathVariable long id);}

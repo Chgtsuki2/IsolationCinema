@@ -1,0 +1,3 @@
+package vn.cinema.entity;
+import jakarta.persistence.*;import java.time.*;import java.math.BigDecimal;import java.util.*;
+@Entity   public class Booking extends BaseEntity{@Column(unique=true,nullable=false) public String bookingCode;public Long userId;public Long showtimeId;public java.math.BigDecimal subtotal;public java.math.BigDecimal totalAmount;public String status;public Instant expiredAt;public Instant confirmedAt;public Instant cancelledAt;@com.fasterxml.jackson.annotation.JsonIgnore @Lob @Column(columnDefinition="LONGTEXT") public String snapshot;@com.fasterxml.jackson.annotation.JsonIgnore public boolean notified;@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER) @JoinColumn(name="booking_id") public List<BookingSeat> seats=new ArrayList<>();}

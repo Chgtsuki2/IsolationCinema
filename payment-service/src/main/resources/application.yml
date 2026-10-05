@@ -1,0 +1,50 @@
+server:
+  address: 127.0.0.1
+  port: 8086
+  error:
+    include-message: never
+    include-stacktrace: never
+spring:
+  application:
+    name: payment-service
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/cinema_payment_db?createDatabaseIfNotExist=false&connectionTimeZone=UTC}
+    username: ${DB_USERNAME:cinema_payment}
+    password: ${DB_PASSWORD:}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 6MB
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connectTimeout: 3000
+            readTimeout: 7000
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    enabled: ${EUREKA_ENABLED:true}
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+app:
+  jwt-secret: ${JWT_SECRET}
+  internal-key: ${INTERNAL_KEY}
+  upload-dir: ${UPLOAD_DIR:../uploads}
+  payos:
+    client-id: ${PAYOS_CLIENT_ID:}
+    api-key: ${PAYOS_API_KEY:}
+    checksum-key: ${PAYOS_CHECKSUM_KEY:}
+    frontend-url: ${PAYOS_FRONTEND_URL:http://127.0.0.1:5173}
