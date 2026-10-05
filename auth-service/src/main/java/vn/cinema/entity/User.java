@@ -1,0 +1,3 @@
+package vn.cinema.entity;
+import jakarta.persistence.*;import java.time.*;import java.math.BigDecimal;import java.util.*;
+@Entity @Table(name="users")  public class User extends BaseEntity{public String fullName;@Column(unique=true,nullable=false) public String email;public String phone;@com.fasterxml.jackson.annotation.JsonIgnore public String password;public String avatarUrl;public String role="USER";public String status="ACTIVE";}

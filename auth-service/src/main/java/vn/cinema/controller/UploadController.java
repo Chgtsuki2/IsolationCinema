@@ -1,0 +1,3 @@
+package vn.cinema.controller;
+import org.springframework.web.bind.annotation.*;import org.springframework.web.multipart.MultipartFile;import vn.cinema.service.UploadService;import vn.cinema.dto.Api;import java.util.Map;
+@RestController public class UploadController{private final UploadService service;public UploadController(UploadService service){this.service=service;}@PostMapping("/api/uploads/images") public Object upload(@RequestParam MultipartFile file,@RequestParam(defaultValue="AVATAR")String type)throws java.io.IOException{return Api.ok(Map.of("url",service.store(file,type)));}}

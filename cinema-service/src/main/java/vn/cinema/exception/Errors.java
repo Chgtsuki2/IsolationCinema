@@ -1,0 +1,12 @@
+package vn.cinema.exception;
+import org.springframework.web.bind.annotation.*;import org.springframework.http.*;import org.springframework.dao.DataIntegrityViolationException;import org.springframework.web.bind.MethodArgumentNotValidException;import java.util.*;
+@RestControllerAdvice public class Errors {
+ @ExceptionHandler(Problem.class) ResponseEntity<?> problem(Problem e){return ResponseEntity.status(e.status).body(error(e.getMessage()));}
+ @ExceptionHandler(DataIntegrityViolationException.class) ResponseEntity<?> conflict(DataIntegrityViolationException e){return ResponseEntity.status(409).body(error("Dữ liệu đã tồn tại, ghế vừa được giữ/đặt hoặc đang được sử dụng"));}
+ @ExceptionHandler(MethodArgumentNotValidException.class) ResponseEntity<?> validation(MethodArgumentNotValidException e){var fields=new LinkedHashMap<String,String>();e.getBindingResult().getFieldErrors().forEach(f->fields.put(f.getField(),f.getDefaultMessage()));var body=error("Dữ liệu không hợp lệ");body.put("errors",fields);return ResponseEntity.badRequest().body(body);}
+ @ExceptionHandler({org.springframework.http.converter.HttpMessageNotReadableException.class,org.springframework.web.method.annotation.MethodArgumentTypeMismatchException.class,IllegalArgumentException.class}) ResponseEntity<?> bad(Exception e){return ResponseEntity.badRequest().body(error("Dữ liệu không hợp lệ"));}
+ @ExceptionHandler(org.springframework.web.multipart.MaxUploadSizeExceededException.class) ResponseEntity<?> upload(Exception e){return ResponseEntity.status(413).body(error("Ảnh tối đa 5MB"));}
+ @ExceptionHandler(feign.FeignException.class) ResponseEntity<?> downstream(feign.FeignException e){int code=e.status();return ResponseEntity.status(code>=400&&code<500?code:503).body(error(code==404?"Không tìm thấy dữ liệu liên quan":code==409?"Trạng thái đã thay đổi, vui lòng tải lại":"Dịch vụ liên quan chưa sẵn sàng"));}
+ @ExceptionHandler(Exception.class) ResponseEntity<?> unexpected(Exception e){org.slf4j.LoggerFactory.getLogger(Errors.class).error("Request failed",e);return ResponseEntity.status(500).body(error("Có lỗi hệ thống, vui lòng thử lại"));}
+ private Map<String,Object> error(String message){var m=new LinkedHashMap<String,Object>();m.put("success",false);m.put("message",message);m.put("data",null);return m;}
+}

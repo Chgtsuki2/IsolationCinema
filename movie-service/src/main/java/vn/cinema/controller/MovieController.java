@@ -1,0 +1,10 @@
+package vn.cinema.controller;
+import org.springframework.web.bind.annotation.*;import jakarta.validation.Valid;import jakarta.validation.constraints.NotBlank;import vn.cinema.dto.*;import vn.cinema.service.MovieService;
+@RestController public class MovieController{private final MovieService s;public MovieController(MovieService s){this.s=s;}
+ @GetMapping({"/api/movies","/api/movies/search","/api/movies/filter"}) public Object list(@RequestParam(required=false)String q,@RequestParam(required=false)String status,@RequestParam(required=false)Long categoryId){return Api.ok(s.list(q,status,categoryId));}
+ @GetMapping("/api/movies/now-showing") public Object now(){return Api.ok(s.list(null,"NOW_SHOWING",null));}@GetMapping("/api/movies/coming-soon") public Object soon(){return Api.ok(s.list(null,"COMING_SOON",null));}
+ @GetMapping("/api/movies/{id}") public Object get(@PathVariable long id){return Api.ok(s.get(id));}@GetMapping("/internal/movies/{id}") public Object internal(@PathVariable long id){return s.get(id);}
+ @PostMapping("/api/movies") public Object create(@Valid @RequestBody MovieRequest r){return Api.ok(s.save(null,r));}@PutMapping("/api/movies/{id}") public Object update(@PathVariable long id,@Valid @RequestBody MovieRequest r){return Api.ok(s.save(id,r));}@DeleteMapping("/api/movies/{id}") public Object delete(@PathVariable long id){s.delete(id);return Api.ok("Đã xóa phim");}
+ public record CategoryRequest(@NotBlank String name,String description){}
+ @GetMapping("/api/categories") public Object categories(){return Api.ok(s.categories());}@PostMapping("/api/categories") public Object category(@Valid @RequestBody CategoryRequest r){return Api.ok(s.category(null,r.name(),r.description()));}@PutMapping("/api/categories/{id}") public Object category(@PathVariable long id,@Valid @RequestBody CategoryRequest r){return Api.ok(s.category(id,r.name(),r.description()));}@DeleteMapping("/api/categories/{id}") public Object deleteCategory(@PathVariable long id){s.deleteCategory(id);return Api.ok("Đã xóa thể loại");}
+}

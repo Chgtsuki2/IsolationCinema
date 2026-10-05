@@ -1,0 +1,3 @@
+package vn.cinema.config;
+import org.springframework.context.annotation.Configuration;import org.springframework.web.servlet.config.annotation.*;import org.springframework.beans.factory.annotation.Value;import java.nio.file.Path;
+@Configuration public class UploadConfig implements WebMvcConfigurer{private final String dir;public UploadConfig(@Value("${app.upload-dir}")String dir){this.dir=dir;}public void addResourceHandlers(ResourceHandlerRegistry r){r.addResourceHandler("/uploads/**").addResourceLocations(Path.of(dir).toAbsolutePath().normalize().toUri().toString()+"/").setCachePeriod(3600);}}
