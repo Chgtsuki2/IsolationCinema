@@ -1,0 +1,3 @@
+package vn.cinema.dto;
+import jakarta.validation.constraints.*;import java.time.LocalDate;import java.util.List;
+public record MovieRequest(@NotBlank String title,String originalTitle,@NotBlank String description,@Min(1) @Max(600) int duration,@NotNull LocalDate releaseDate,@NotNull LocalDate endDate,@NotBlank String ageRating,String language,String country,String director,String actors,String posterUrl,String bannerUrl,String trailerUrl,@NotBlank @Pattern(regexp="NOW_SHOWING|COMING_SOON|STOPPED")String status,@NotNull List<Long> categoryIds){}

@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:test;MODE=MySQL;DB_CLOSE_DELAY=-1
+    username: sa
+    password: ''
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+eureka:
+  client:
+    enabled: false
+app:
+  jwt-secret: 0123456789012345678901234567890123456789
+  internal-key: test-internal
+  upload-dir: target/test-uploads

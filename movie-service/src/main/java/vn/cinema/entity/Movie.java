@@ -1,0 +1,3 @@
+package vn.cinema.entity;
+import jakarta.persistence.*;import java.time.*;import java.math.BigDecimal;import java.util.*;
+@Entity   public class Movie extends BaseEntity{public String title;public String originalTitle;@Column(length=6000) public String description;public int duration;public LocalDate releaseDate;public LocalDate endDate;public String ageRating;public String language;public String country;public String director;@Column(length=2000) public String actors;@Column(length=2000) public String posterUrl;@Column(length=2000) public String bannerUrl;@Column(length=2000) public String trailerUrl;public String status;@ManyToMany(fetch=FetchType.EAGER) public Set<Category> categories=new LinkedHashSet<>();}
