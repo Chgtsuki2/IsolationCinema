@@ -1,0 +1,54 @@
+{
+  "testedAt": "2026-09-22T05:44:06.255Z",
+  "base": "http://localhost:8080",
+  "reports": [
+    {
+      "name": "Register and reject duplicate email",
+      "status": "PASS"
+    },
+    {
+      "name": "Login and reject wrong password",
+      "status": "PASS"
+    },
+    {
+      "name": "Reject forged identity and user admin write",
+      "status": "PASS"
+    },
+    {
+      "name": "Read live movies, cinemas, showtimes and seat prices",
+      "status": "PASS"
+    },
+    {
+      "name": "Create booking with server prices",
+      "status": "PASS"
+    },
+    {
+      "name": "Reject duplicate booking and wrong owner",
+      "status": "PASS"
+    },
+    {
+      "name": "Create payment, leave, reopen, and resume same payment",
+      "status": "PASS"
+    },
+    {
+      "name": "Confirm five times concurrently, one successful payment",
+      "status": "PASS"
+    },
+    {
+      "name": "Notification delivered exactly once",
+      "status": "PASS"
+    },
+    {
+      "name": "Cancel booking and release seats",
+      "status": "PASS"
+    },
+    {
+      "name": "Admin CRUD category, cinema, room, seats, movie, showtime",
+      "status": "PASS"
+    },
+    {
+      "name": "Upload PNG, serve bytes, preserve URL across profile reload",
+      "status": "PASS"
+    }
+  ]
+}

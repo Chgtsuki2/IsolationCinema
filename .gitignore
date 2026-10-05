@@ -1,0 +1,11 @@
+.idea/
+*.iml
+**/target/
+**/node_modules/
+**/dist/
+uploads/
+.env
+.env.*
+*.tsbuildinfo
+*.log
+*.zip   

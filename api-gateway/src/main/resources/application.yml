@@ -1,0 +1,23 @@
+server:
+  address: 127.0.0.1
+  port: 8080
+  error:
+    include-message: never
+    include-stacktrace: never
+spring:
+  application:
+    name: api-gateway
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    enabled: ${EUREKA_ENABLED:true}
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+app:
+  jwt-secret: ${JWT_SECRET}
+  internal-key: ${INTERNAL_KEY}
+  upload-dir: ${UPLOAD_DIR:../uploads}
+

@@ -1,0 +1,32 @@
+-- Run with the database administrator. Application accounts have access to their own database only.
+USE cinema_auth_db;
+CREATE TABLE IF NOT EXISTS users (id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, created_at DATETIME(6), updated_at DATETIME(6), full_name VARCHAR(255), email VARCHAR(255) NOT NULL UNIQUE, phone VARCHAR(255), password VARCHAR(255), avatar_url VARCHAR(255), role VARCHAR(255), status VARCHAR(255)) ENGINE=InnoDB;
+USE cinema_movie_db;
+CREATE TABLE IF NOT EXISTS category (id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, created_at DATETIME(6), updated_at DATETIME(6), name VARCHAR(255) NOT NULL UNIQUE, description VARCHAR(2000)) ENGINE=InnoDB;
+USE cinema_movie_db;
+CREATE TABLE IF NOT EXISTS movie (id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, created_at DATETIME(6), updated_at DATETIME(6), title VARCHAR(255), original_title VARCHAR(255), description VARCHAR(6000), duration INT NOT NULL, release_date DATE, end_date DATE, age_rating VARCHAR(255), language VARCHAR(255), country VARCHAR(255), director VARCHAR(255), actors VARCHAR(2000), poster_url VARCHAR(2000), banner_url VARCHAR(2000), trailer_url VARCHAR(2000), status VARCHAR(255)) ENGINE=InnoDB;
+USE cinema_movie_db;
+CREATE TABLE IF NOT EXISTS movie_categories(movie_id BIGINT NOT NULL,categories_id BIGINT NOT NULL,PRIMARY KEY(movie_id,categories_id),FOREIGN KEY(movie_id) REFERENCES movie(id),FOREIGN KEY(categories_id) REFERENCES category(id)) ENGINE=InnoDB;
+USE cinema_cinema_db;
+CREATE TABLE IF NOT EXISTS cinema (id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, created_at DATETIME(6), updated_at DATETIME(6), name VARCHAR(255),address VARCHAR(255),province VARCHAR(255),phone VARCHAR(255),description VARCHAR(4000),image_url VARCHAR(2000),status VARCHAR(255)) ENGINE=InnoDB;
+USE cinema_cinema_db;
+CREATE TABLE IF NOT EXISTS room (id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, created_at DATETIME(6), updated_at DATETIME(6), cinema_id BIGINT,name VARCHAR(255),total_seats INT NOT NULL,room_type VARCHAR(255),status VARCHAR(255)) ENGINE=InnoDB;
+USE cinema_cinema_db;
+CREATE TABLE IF NOT EXISTS seat (id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, created_at DATETIME(6), updated_at DATETIME(6), room_id BIGINT,row_name VARCHAR(255),seat_number INT NOT NULL,seat_type VARCHAR(255),status VARCHAR(255),UNIQUE KEY seat_position(room_id,row_name,seat_number)) ENGINE=InnoDB;
+USE cinema_showtime_db;
+CREATE TABLE IF NOT EXISTS showtime (id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, created_at DATETIME(6), updated_at DATETIME(6), movie_id BIGINT,cinema_id BIGINT,room_id BIGINT,show_date DATE,start_time TIME(6),end_time TIME(6),start_at DATETIME(6),end_at DATETIME(6),base_price DECIMAL(14,0),status VARCHAR(255),booking_opened BIT NOT NULL DEFAULT 0) ENGINE=InnoDB;
+USE cinema_showtime_db;
+CREATE TABLE IF NOT EXISTS room_guard(id BIGINT PRIMARY KEY) ENGINE=InnoDB;
+USE cinema_booking_db;
+CREATE TABLE IF NOT EXISTS booking (id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, created_at DATETIME(6), updated_at DATETIME(6), booking_code VARCHAR(255) NOT NULL UNIQUE,user_id BIGINT,showtime_id BIGINT,subtotal DECIMAL(38,2),total_amount DECIMAL(38,2),status VARCHAR(255),expired_at DATETIME(6),confirmed_at DATETIME(6),cancelled_at DATETIME(6),snapshot LONGTEXT,notified BIT NOT NULL) ENGINE=InnoDB;
+USE cinema_booking_db;
+CREATE TABLE IF NOT EXISTS booking_seat (id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, created_at DATETIME(6), updated_at DATETIME(6), booking_id BIGINT,showtime_id BIGINT,seat_id BIGINT,seat_name VARCHAR(255),seat_type VARCHAR(255),unit_price DECIMAL(38,2),FOREIGN KEY(booking_id) REFERENCES booking(id)) ENGINE=InnoDB;
+USE cinema_booking_db;
+CREATE TABLE IF NOT EXISTS seat_reservation (id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, created_at DATETIME(6), updated_at DATETIME(6), booking_id BIGINT,showtime_id BIGINT NOT NULL,seat_id BIGINT NOT NULL,UNIQUE KEY one_seat_per_showtime(showtime_id,seat_id)) ENGINE=InnoDB;
+USE cinema_payment_db;
+CREATE TABLE IF NOT EXISTS payment (id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, created_at DATETIME(6), updated_at DATETIME(6), booking_id BIGINT NOT NULL UNIQUE,user_id BIGINT,amount DECIMAL(38,2),payment_method VARCHAR(255),transaction_code VARCHAR(255) UNIQUE,qr_content VARCHAR(2048),status VARCHAR(255),paid_at DATETIME(6),provider VARCHAR(255),provider_order_code BIGINT UNIQUE,provider_payment_link_id VARCHAR(255) UNIQUE,provider_reference VARCHAR(255) UNIQUE,checkout_url VARCHAR(1000),provider_status VARCHAR(255),account_number VARCHAR(255),account_name VARCHAR(255),provider_checked_at DATETIME(6)) ENGINE=InnoDB;
+USE cinema_payment_db;
+CREATE TABLE IF NOT EXISTS payment_guard(id BIGINT PRIMARY KEY) ENGINE=InnoDB;
+USE cinema_notification_db;
+CREATE TABLE IF NOT EXISTS notification (id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, created_at DATETIME(6), updated_at DATETIME(6), booking_id BIGINT NOT NULL UNIQUE,user_id BIGINT,title VARCHAR(255),message VARCHAR(255),read_status BIT NOT NULL) ENGINE=InnoDB;
+

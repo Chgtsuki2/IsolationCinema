@@ -1,0 +1,4 @@
+package vn.cinema.gateway;
+import org.junit.jupiter.api.Test;import org.springframework.boot.test.context.SpringBootTest;import org.springframework.beans.factory.annotation.Autowired;import org.springframework.test.web.reactive.server.WebTestClient;import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+@SpringBootTest(properties={"app.jwt-secret=0123456789012345678901234567890123456789","app.internal-key=test-internal","eureka.client.enabled=false"},webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT) @AutoConfigureWebTestClient
+class GatewayTest{@Autowired WebTestClient http;@Test void privateRoutesRejectAnonymous(){http.get().uri("/api/bookings").exchange().expectStatus().isUnauthorized();}@Test void spoofedIdentityDoesNotAuthenticate(){http.post().uri("/api/bookings").header("X-User-Id","1").header("X-User-Role","ADMIN").exchange().expectStatus().isUnauthorized();}}
