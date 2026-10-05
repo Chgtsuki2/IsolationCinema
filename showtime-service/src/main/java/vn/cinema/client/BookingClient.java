@@ -1,0 +1,2 @@
+package vn.cinema.client;
+import org.springframework.cloud.openfeign.FeignClient;import org.springframework.web.bind.annotation.*;@FeignClient(name="booking-service",url="http://localhost:8085")public interface BookingClient{@GetMapping("/internal/bookings/showtime/{id}/exists")boolean used(@PathVariable long id);}

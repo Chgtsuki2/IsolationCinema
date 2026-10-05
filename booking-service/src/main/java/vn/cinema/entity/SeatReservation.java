@@ -1,0 +1,3 @@
+package vn.cinema.entity;
+import jakarta.persistence.*;import java.time.*;import java.math.BigDecimal;import java.util.*;
+@Entity @Table(uniqueConstraints=@UniqueConstraint(columnNames={"showtime_id","seat_id"}))  public class SeatReservation extends BaseEntity{@Column(name="showtime_id",nullable=false)public Long showtimeId;@Column(name="seat_id",nullable=false)public Long seatId;public Long bookingId;}

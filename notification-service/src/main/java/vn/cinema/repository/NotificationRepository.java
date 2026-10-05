@@ -1,0 +1,3 @@
+package vn.cinema.repository;
+import vn.cinema.entity.Notification;import org.springframework.data.jpa.repository.*;import org.springframework.data.repository.query.Param;import jakarta.persistence.LockModeType;import java.util.*;
+public interface NotificationRepository extends JpaRepository<Notification,Long>{List<Notification> findByUserIdOrderByCreatedAtDesc(Long userId);Optional<Notification> findByBookingId(Long id);}

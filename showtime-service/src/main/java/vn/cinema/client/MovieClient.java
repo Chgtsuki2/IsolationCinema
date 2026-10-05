@@ -1,0 +1,2 @@
+package vn.cinema.client;
+import org.springframework.cloud.openfeign.FeignClient;import org.springframework.web.bind.annotation.*;import com.fasterxml.jackson.databind.JsonNode;@FeignClient(name="movie-service",url="http://localhost:8082")public interface MovieClient{@GetMapping("/internal/movies/{id}")JsonNode get(@PathVariable long id);}

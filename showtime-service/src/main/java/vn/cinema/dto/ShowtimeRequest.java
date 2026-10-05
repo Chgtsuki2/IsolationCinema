@@ -1,0 +1,2 @@
+package vn.cinema.dto;
+import jakarta.validation.constraints.*;import java.time.*;import java.math.BigDecimal;public record ShowtimeRequest(@NotNull Long movieId,@NotNull Long cinemaId,@NotNull Long roomId,@NotNull LocalDate showDate,@NotNull LocalTime startTime,@NotNull @DecimalMin("1000") BigDecimal basePrice,@NotBlank @Pattern(regexp="AVAILABLE|FULL|CANCELLED|FINISHED")String status){}

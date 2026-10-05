@@ -1,0 +1,4 @@
+package vn.cinema.controller;
+import org.springframework.web.bind.annotation.*;import jakarta.validation.Valid;import jakarta.validation.constraints.*;import vn.cinema.service.NotificationService;import vn.cinema.security.Actor;import vn.cinema.dto.Api;
+@RestController public class NotificationController{private final NotificationService s;public NotificationController(NotificationService s){this.s=s;}public record Send(@NotNull Long bookingId,@NotNull Long userId,@NotBlank String title,@NotBlank String message){}
+ @PostMapping("/internal/notifications")public Object send(@Valid @RequestBody Send r){return s.send(r.bookingId(),r.userId(),r.title(),r.message());}@GetMapping("/api/notifications")public Object list(){return Api.ok(s.list(Actor.id(),Actor.admin()));}@PutMapping("/api/notifications/{id}/read")public Object read(@PathVariable long id){return Api.ok(s.read(id,Actor.id(),Actor.admin()));}}

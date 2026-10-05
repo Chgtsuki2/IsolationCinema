@@ -1,0 +1,13 @@
+package vn.cinema.security;
+import org.springframework.context.annotation.*;import org.springframework.beans.factory.annotation.Value;import org.springframework.security.config.annotation.web.builders.HttpSecurity;import org.springframework.security.web.*;import org.springframework.security.oauth2.jwt.*;import org.springframework.security.oauth2.jose.jws.MacAlgorithm;import javax.crypto.spec.SecretKeySpec;import java.nio.charset.StandardCharsets;import org.springframework.security.config.http.SessionCreationPolicy;
+@Configuration public class SecurityConfig {
+ @Bean JwtDecoder decoder(@Value("${app.jwt-secret}") String secret){return NimbusJwtDecoder.withSecretKey(new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8),"HmacSHA256")).macAlgorithm(MacAlgorithm.HS256).build();}
+ @Bean SecurityFilterChain chain(HttpSecurity http,@Value("${app.internal-key}") String key)throws Exception{
+  http.csrf(c->c.disable()).sessionManagement(s->s.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+  http.addFilterBefore(new InternalFilter(key),org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
+  http.authorizeHttpRequests(a->a.requestMatchers("/internal/**").hasRole("INTERNAL").requestMatchers("/api/payments/payos/webhook","/api/auth/login","/api/auth/register","/uploads/**","/v3/api-docs/**","/swagger-ui/**","/swagger-ui.html").permitAll().requestMatchers(org.springframework.http.HttpMethod.GET,"/api/movies/**","/api/categories/**","/api/cinemas/**","/api/rooms/**","/api/seats/**","/api/showtimes/**").permitAll().requestMatchers("/api/movies/**","/api/categories/**","/api/cinemas/**","/api/rooms/**","/api/seats/**","/api/showtimes/**","/api/auth/users/**").hasRole("ADMIN").anyRequest().authenticated());
+  http.oauth2ResourceServer(o->o.jwt(j->j.jwtAuthenticationConverter(jwt->new org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken(jwt,java.util.List.of(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_"+jwt.getClaimAsString("role")))))).authenticationEntryPoint((r,s,e)->fail(s,401,"Vui lòng đăng nhập")));
+  http.exceptionHandling(e->e.accessDeniedHandler((r,s,x)->fail(s,403,"Bạn không có quyền thực hiện")));return http.build();
+ }
+ static void fail(jakarta.servlet.http.HttpServletResponse s,int code,String message)throws java.io.IOException{s.setStatus(code);s.setContentType("application/json;charset=UTF-8");s.getWriter().write("{\"success\":false,\"message\":\""+message+"\",\"data\":null}");}
+}

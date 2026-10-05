@@ -1,0 +1,46 @@
+server:
+  address: 127.0.0.1
+  port: 8085
+  error:
+    include-message: never
+    include-stacktrace: never
+spring:
+  application:
+    name: booking-service
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/cinema_booking_db?createDatabaseIfNotExist=false&connectionTimeZone=UTC}
+    username: ${DB_USERNAME:cinema_booking}
+    password: ${DB_PASSWORD:}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 6MB
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connectTimeout: 3000
+            readTimeout: 7000
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    enabled: ${EUREKA_ENABLED:true}
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+app:
+  jwt-secret: ${JWT_SECRET}
+  internal-key: ${INTERNAL_KEY}
+  upload-dir: ${UPLOAD_DIR:../uploads}
+

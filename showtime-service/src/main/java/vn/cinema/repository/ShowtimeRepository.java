@@ -1,0 +1,3 @@
+package vn.cinema.repository;
+import vn.cinema.entity.Showtime;import org.springframework.data.jpa.repository.*;import org.springframework.data.repository.query.Param;import jakarta.persistence.LockModeType;import java.util.*;
+public interface ShowtimeRepository extends JpaRepository<Showtime,Long>{@Lock(LockModeType.PESSIMISTIC_WRITE) @Query("select s from Showtime s where s.id=:id") Optional<Showtime> lock(@Param("id")long id);boolean existsByMovieId(Long id);boolean existsByRoomId(Long id);@Query("select s from Showtime s where s.roomId=:room and s.status<>'CANCELLED' and s.startAt<:end and s.endAt>:start") List<Showtime> overlapping(@Param("room")Long room,@Param("start")java.time.LocalDateTime start,@Param("end")java.time.LocalDateTime end);}

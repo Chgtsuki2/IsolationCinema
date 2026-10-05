@@ -1,0 +1,3 @@
+package vn.cinema.repository;
+import vn.cinema.entity.Booking;import org.springframework.data.jpa.repository.*;import org.springframework.data.repository.query.Param;import jakarta.persistence.LockModeType;import java.util.*;
+public interface BookingRepository extends JpaRepository<Booking,Long>{@Lock(LockModeType.PESSIMISTIC_WRITE) @Query("select b from Booking b where b.id=:id") Optional<Booking> lock(@Param("id")long id);List<Booking> findByUserIdOrderByCreatedAtDesc(Long userId);List<Booking> findByStatusAndExpiredAtBefore(String status,java.time.Instant time);List<Booking> findByStatusAndNotifiedFalse(String status);boolean existsByShowtimeId(Long id);}
